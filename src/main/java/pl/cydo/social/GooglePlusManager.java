@@ -7,9 +7,11 @@ import android.graphics.BitmapFactory;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
@@ -24,10 +26,6 @@ import java.io.InputStream;
 import java.net.URL;
 
 public class GooglePlusManager implements View.OnClickListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, ResultCallback<People.LoadPeopleResult> {
-    static final LatLng HAMBURG = new LatLng(53.558, 9.927);
-    static final LatLng KIEL = new LatLng(53.551, 9.993);
-    private GoogleMap map;
-    private LocationManager locationManager = null;
     private Activity mainActivity;
 
     /* Request code used to invoke sign in user interactions. */
@@ -52,6 +50,7 @@ public class GooglePlusManager implements View.OnClickListener, GoogleApiClient.
     private ConnectionResult mConnectionResult;
 
     public GooglePlusManager(Activity activity) throws IntentSender.SendIntentException {
+
         mainActivity = activity;
         mGoogleApiClient = new GoogleApiClient.Builder(mainActivity.getBaseContext())
                 .addConnectionCallbacks(this)
@@ -59,21 +58,24 @@ public class GooglePlusManager implements View.OnClickListener, GoogleApiClient.
                 .addApi(Plus.API)
                 .addScope(Plus.SCOPE_PLUS_LOGIN)
                 .build();
+        mGoogleApiClient.connect();
     }
+
+
 
     /* A helper method to resolve the current ConnectionResult error. */
     private void resolveSignInError() {
-        if (mConnectionResult.hasResolution()) {
-            try {
+        try {
+            if (mConnectionResult.hasResolution()) {
+
                 mIntentInProgress = true;
                 mainActivity.startIntentSenderForResult(mConnectionResult.getResolution().getIntentSender(),
                         RC_SIGN_IN, null, 0, 0, 0);
-            } catch (IntentSender.SendIntentException e) {
-                // The intent was canceled before it was sent.  Return to the default
-                // state and attempt to connect to get an updated ConnectionResult.
-                mIntentInProgress = false;
-                mGoogleApiClient.connect();
+
             }
+        } catch (Exception e) {
+            mIntentInProgress = false;
+            mGoogleApiClient.connect();
         }
     }
 
@@ -93,24 +95,29 @@ public class GooglePlusManager implements View.OnClickListener, GoogleApiClient.
             resolveSignInError();
         }
 
-        if (view.getId() == R.id.sign_out_button) {
-            if (mGoogleApiClient.isConnected()) {
-                Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
+//        if (view.getId() == R.id.sign_out_button) {
+//            disconnectUser(view);
+//        }
+    }
 
-                Plus.AccountApi.revokeAccessAndDisconnect(mGoogleApiClient)
-                        .setResultCallback(new ResultCallback<Status>() {
+    private void disconnectUser(View view) {
+        if (mGoogleApiClient.isConnected()) {
+            Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
 
-                            @Override
-                            public void onResult(Status status) {
-                                System.out.println(status);
-                            }
-                        });
+            Plus.AccountApi.revokeAccessAndDisconnect(mGoogleApiClient)
+                    .setResultCallback(new ResultCallback<Status>() {
 
-                mGoogleApiClient.disconnect();
-                mGoogleApiClient.connect();
-                System.out.println("DISCONECTED");
-                Toast.makeText(view.getContext(), "Disconnected", Toast.LENGTH_LONG).show();
-            }
+                        @Override
+                        public void onResult(Status status) {
+                            System.out.println(status);
+                        }
+                    });
+
+            mGoogleApiClient.disconnect();
+            mGoogleApiClient.connect();
+//            logOutButton.setVisibility(View.GONE);
+            System.out.println("DISCONECTED");
+            Toast.makeText(view.getContext(), "Disconnected", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -152,17 +159,17 @@ public class GooglePlusManager implements View.OnClickListener, GoogleApiClient.
     @Override
     public void onConnected(Bundle connectionHint) {
         System.out.println("onConnected");
-        mainActivity.findViewById(R.id.sign_in_button).setVisibility(View.INVISIBLE);
+//        logIntButton.setVisibility(View.GONE);
+//        logOutButton.setVisibility(View.VISIBLE);
+//        mainActivity.findViewById(R.id.sign_in_button).setVisibility(View.INVISIBLE);
         mSignInClicked = false;
 //        Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
-        Toast.makeText(mainActivity, "User is connected!", Toast.LENGTH_LONG).show();
 
         String email = Plus.AccountApi.getAccountName(mGoogleApiClient);
-        System.err.println("email: " + email);
 
+        Toast.makeText(mainActivity, "User is connected!: "+email, Toast.LENGTH_LONG).show();
 
         Plus.PeopleApi.loadVisible(mGoogleApiClient, null).setResultCallback(this);
-
 
 //        getAndDisplaySimpleInfo();
     }

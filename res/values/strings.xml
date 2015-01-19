@@ -2,4 +2,5 @@
 <resources>
     <string name="hello">Hello Domanu!</string>
     <string name="app_name">NoeNavigator</string>
+    <string name="please_choose_category">Please choose category</string>
 </resources>

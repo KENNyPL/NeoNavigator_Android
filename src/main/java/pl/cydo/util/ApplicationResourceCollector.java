@@ -5,7 +5,6 @@ import android.os.AsyncTask;
 import pl.cydo.repository.CategoryRepository;
 
 public class ApplicationResourceCollector extends AsyncTask<Object, Integer, Long>  {
-
     @Override
     protected Long doInBackground(Object... objects) {
         CategoryRepository.getINSTANCE();

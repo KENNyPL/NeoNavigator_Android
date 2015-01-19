@@ -38,8 +38,6 @@ public class MainTabActivity extends FragmentActivity implements PointsCollector
     }
 
     private void initialiseTabHost(Bundle savedInstanceState) {
-
-
         mTabHost = (FragmentTabHost) findViewById(android.R.id.tabhost);
         mTabHost.setup(this, getSupportFragmentManager(), R.id.realtabcontent);
 
@@ -51,7 +49,7 @@ public class MainTabActivity extends FragmentActivity implements PointsCollector
 
     @Override
     public void setPointsCollector(PointsCollector pointsCollector) {
-        this.pointsCollector=pointsCollector;
+        this.pointsCollector = pointsCollector;
     }
 
     @Override

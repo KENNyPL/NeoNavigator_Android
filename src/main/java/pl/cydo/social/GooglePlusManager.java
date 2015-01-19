@@ -25,6 +25,8 @@ import pl.jcygan.android.R;
 import java.io.InputStream;
 import java.net.URL;
 
+
+//todo: to general rebuild
 public class GooglePlusManager implements View.OnClickListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, ResultCallback<People.LoadPeopleResult> {
     private Activity mainActivity;
 

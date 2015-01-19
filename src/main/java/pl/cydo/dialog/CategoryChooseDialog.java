@@ -9,7 +9,6 @@ import android.view.View;
 import android.widget.ExpandableListView;
 import pl.cydo.model.ServicePointCategory;
 import pl.cydo.repository.CategoryRepository;
-import pl.cydo.model.CategoriesTreeModel;
 import pl.cydo.view.components.CategoryAdapter;
 import pl.jcygan.android.R;
 
@@ -32,19 +31,18 @@ public class CategoryChooseDialog extends DialogFragment {
         View view = inflater.inflate(R.layout.category_choose, null);
         builder.setView(view);
 
-        Dialog dialog =builder.create();
+        Dialog dialog = builder.create();
         ExpandableListView categoryView = (ExpandableListView) view.findViewById(R.id.listView);
         List<ServicePointCategory> list = new LinkedList();
         list.add(CategoryRepository.getINSTANCE().getCategories());
-        CategoryAdapter adapter = new CategoryAdapter(getActivity() ,list, dialog);
-//        adapter.add(CategoryRepository.getINSTANCE().getCategories());
+        CategoryAdapter adapter = new CategoryAdapter(getActivity(), list, dialog);
         categoryView.setAdapter(adapter);
         adapter.setRoot(true);
 
         categoryView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
 
             @Override
-            public boolean onChildClick(ExpandableListView parent, View v,int groupPosition, int childPosition, long id) {
+            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
                 System.out.println("onChildClick");
                 return true;
             }

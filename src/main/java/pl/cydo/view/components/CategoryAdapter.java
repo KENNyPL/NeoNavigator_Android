@@ -6,8 +6,10 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.*;
-import pl.cydo.model.CategoriesTreeModel;
+import android.widget.BaseExpandableListAdapter;
+import android.widget.Button;
+import android.widget.ExpandableListView;
+import android.widget.TextView;
 import pl.cydo.model.ServicePointCategory;
 import pl.jcygan.android.R;
 
@@ -17,20 +19,20 @@ import java.util.List;
 public class CategoryAdapter extends BaseExpandableListAdapter {
     private List<ServicePointCategory> values = new LinkedList<ServicePointCategory>();
     private final Activity context;
-    private boolean isRoot=false;
+    private boolean isRoot = false;
     private int padding = 150;
     private final Dialog dialog;
 
     public CategoryAdapter(Activity context, List<ServicePointCategory> values, Dialog dialog) {
         this.context = context;
         this.values = values;
-        this.dialog= dialog;
+        this.dialog = dialog;
     }
 
     public CategoryAdapter(Activity context, ServicePointCategory value, Dialog dialog) {
         this.context = context;
         this.values.add(value);
-        this.dialog= dialog;
+        this.dialog = dialog;
     }
 
     public void setPadding(int padding) {
@@ -93,9 +95,9 @@ public class CategoryAdapter extends BaseExpandableListAdapter {
 
         LayoutInflater inflater = (LayoutInflater) convertView.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View rootView = inflater.inflate(R.layout.category_list_element, parent, false);
-        final String elementText=values.get(groupPosition).getText();
+        final String elementText = values.get(groupPosition).getText();
         ((TextView) rootView.findViewById(R.id.textView1)).setText(elementText);
-        ((TextView) rootView.findViewById(R.id.textView1)).setPadding(padding/2,0,0,0);
+        ((TextView) rootView.findViewById(R.id.textView1)).setPadding(padding / 2, 0, 0, 0);
 
         ((Button) rootView.findViewById(R.id.button)).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -120,14 +122,14 @@ public class CategoryAdapter extends BaseExpandableListAdapter {
         ServicePointCategory child = values.get(groupPosition).getChildren().get(childPosition);
         CustExpListview rootView = new CustExpListview(convertView.getContext());
         CategoryAdapter adapter = new CategoryAdapter(context, child, dialog);
-        adapter.setPadding(padding+CustExpListview.childSuperLeftPadding);
+        adapter.setPadding(padding + CustExpListview.childSuperLeftPadding);
 
         rootView.setAdapter(adapter);
-        if(child.getChildren().isEmpty()) {
+        if (child.getChildren().isEmpty()) {
             rootView.setGroupIndicator(null);
         }
 
-        rootView.setIndicatorBounds( padding,0);
+        rootView.setIndicatorBounds(padding, 0);
 
         return rootView;
     }
@@ -143,7 +145,7 @@ public class CategoryAdapter extends BaseExpandableListAdapter {
     }
 
     class CustExpListview extends ExpandableListView {
-        private static final int childSuperLeftPadding=100;
+        private static final int childSuperLeftPadding = 100;
 
         public CustExpListview(Context context) {
             super(context);

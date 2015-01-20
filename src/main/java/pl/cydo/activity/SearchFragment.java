@@ -36,6 +36,7 @@ public class SearchFragment extends Fragment {
     private EditText editText;
     private EditText longitudeText;
     private EditText latitudeEdit;
+    private EditText serverIpEdit;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -47,6 +48,7 @@ public class SearchFragment extends Fragment {
         editText = (EditText) rootView.findViewById(R.id.editText);
         latitudeEdit = (EditText) rootView.findViewById(R.id.latitude);
         longitudeText = (EditText) rootView.findViewById(R.id.longitude);
+        serverIpEdit = (EditText) rootView.findViewById(R.id.serverIpTextEdit);
 
         categoryChooseButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,8 +63,12 @@ public class SearchFragment extends Fragment {
             public void onClick(View view) {
                 FragmentTabHost mTabHost = (FragmentTabHost) getActivity().findViewById(android.R.id.tabhost);
                 mTabHost.setCurrentTab(1);
-                pointsCollectorContainer.setPointsCollector(new PointsCollector(Long.parseLong(latitudeEdit.getText().toString()), Long.parseLong(longitudeText.getText().toString()),
-                        Long.parseLong(editText.getText().toString()), categoryChooseButton.getText().toString()));
+                pointsCollectorContainer.setPointsCollector(new PointsCollector(
+                        serverIpEdit.getText().toString(),
+                        Long.parseLong(latitudeEdit.getText().toString()),
+                        Long.parseLong(longitudeText.getText().toString()),
+                        Long.parseLong(editText.getText().toString()),
+                        categoryChooseButton.getText().toString()));
             }
         });
 

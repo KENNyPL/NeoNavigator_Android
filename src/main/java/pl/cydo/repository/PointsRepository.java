@@ -20,11 +20,11 @@ public class PointsRepository {
         return INSTANCE;
     }
 
-    public List<ServicePoint> getPoints(Long latitude, Long longitude, Long distance, String categoryname) {
+    public List<ServicePoint> getPoints(String ip, Long latitude, Long longitude, Long distance, String categoryname) {
         final Gson gson = new GsonBuilder()
                 .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
                 .create();
-        StringBuilder url = new StringBuilder("http://192.168.0.4:8080/NeoNavigator/rest/points/all")
+        StringBuilder url = new StringBuilder("http://"+ip+":8080/NeoNavigator/rest/points/all")
                 .append("/" + longitude)
                 .append("/" + latitude)
                 .append("/" + distance)

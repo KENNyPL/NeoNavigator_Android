@@ -12,16 +12,38 @@ public class PointsCollector extends AsyncTask<Object, Boolean, List<ServicePoin
     private Long longitude;
     private Long distance;
     private String categoryName;
+    private String ip;
 
-    public PointsCollector(Long latitude, Long longitude, Long distance, String categoryName) {
+    public PointsCollector(String ip, Long latitude, Long longitude, Long distance, String categoryName) {
         this.latitude = latitude;
         this.longitude = longitude;
         this.distance = distance;
         this.categoryName = categoryName;
+        this.ip = ip;
     }
 
     @Override
     protected List<ServicePoint> doInBackground(Object... objects) {
-        return PointsRepository.getINSTANCE().getPoints(latitude, longitude, distance, categoryName);
+        return PointsRepository.getINSTANCE().getPoints(ip, latitude, longitude, distance, categoryName);
+    }
+
+    public Long getLatitude() {
+        return latitude;
+    }
+
+    public Long getLongitude() {
+        return longitude;
+    }
+
+    public Long getDistance() {
+        return distance;
+    }
+
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public String getIp() {
+        return ip;
     }
 }

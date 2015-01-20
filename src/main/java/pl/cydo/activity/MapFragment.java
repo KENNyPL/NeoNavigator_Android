@@ -47,7 +47,11 @@ public class MapFragment extends Fragment {
                 map.addMarker(new MarkerOptions()
                         .title(point.getName())
                         .position(latLng));
+
             }
+            map.moveCamera(CameraUpdateFactory.newLatLngZoom(
+                    new LatLng(pointsCollectorContainer.getPointsCollector().getLatitude().doubleValue()/1000000,
+                            pointsCollectorContainer.getPointsCollector().getLongitude().doubleValue()/1000000), 6));
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -79,9 +83,8 @@ public class MapFragment extends Fragment {
                 .findFragmentById(R.id.map));
 
         map = mapFragment.getMap();
-
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(
-                new LatLng(-18.142, 178.431), 2));
         map.setMyLocationEnabled(true);
+        map.getUiSettings().setZoomControlsEnabled(true);
+        map.getUiSettings().setRotateGesturesEnabled(false);
     }
 }
